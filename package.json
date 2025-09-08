@@ -1,0 +1,86 @@
+{
+  "name": "watch-dev-app-v2",
+  "version": "1.0.0",
+  "description": "application to track and improve employee's productivity",
+  "homepage": "https://remoteprogrammer.com",
+  "main": "app/main/main.js",
+  "author": {
+    "name": "RP",
+    "email": "manish90.rp@gmail.com",
+    "url": "https://remoteprogrammer.com"
+  },
+  "license": "ISC",
+  "scripts": {
+    "start": "electron .",
+    "postinstall": "electron-builder install-app-deps",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:linux": "electron-builder --linux",
+    "build:mac": "electron-builder --mac",
+    "build:all": "electron-builder -mwl"
+  },
+  "devDependencies": {
+    "electron": "^30.0.8",
+    "electron-builder": "^24.3.0"
+  },
+  "dependencies": {
+    "electron-json-storage": "^4.6.0",
+    "electron-log": "^5.4.3",
+    "electron-updater": "^6.6.2",
+    "get-windows-rp-ms": "^1.0.0",
+    "keytar": "^7.9.0",
+    "node-cron": "^3.0.3",
+    "sqlite3": "^5.0.2"
+  },
+  "build": {
+    "appId": "com.watch.watch-dev-app-v2",
+    "productName": "watch-dev-app-v2",
+    "copyright": "Copyright © 2025 RP",
+    "directories": {
+      "output": "dist"
+    },
+    "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
+    "asar": true,
+    "asarUnpack": [
+      "**/*.node"
+    ],
+    "files": [
+      "app/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "app/renderer/assets/icon/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "appimage"
+      ],
+      "category": "Utility",
+      "icon": "app/renderer/assets/icon",
+      "maintainer": "RP <manish90.rp@gmail.com>"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.productivity",
+      "icon": "app/renderer/assets/icon/icon.icns",
+      "identity": null
+    }
+  }
+}

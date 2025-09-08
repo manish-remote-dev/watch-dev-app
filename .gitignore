@@ -1,0 +1,5 @@
+node_modules/
+watch_custom_storage/
+watchApp.db
+out/
+dist/

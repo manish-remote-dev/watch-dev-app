@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <!-- <title>Watch App | Remote Programmer Pvt Ltd</title> -->
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
+
+    <!-- Vendor CSS Files -->
+    <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet"/>
+  
+    <!-- Template Main CSS File -->
+    
+    <link href="../assets/css/bootstrap-colors.css" rel="stylesheet" />
+    <link href="../assets/select2/css/select2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet" />
+
+    <style>
+      /* Spinner CSS */
+      #spinner {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(255, 255, 255, 0.8);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 1000;
+      }
+
+      #spinner .loader {
+          border: 16px solid #f3f3f3;
+          border-top: 16px solid #3498db;
+          border-radius: 50%;
+          width: 120px;
+          height: 120px;
+          animation: spin 2s linear infinite;
+      }
+
+      @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+      }
+  </style>
+
+  </head>
+
+  <body>
+    <!-- Spinner Element -->
+    <!-- <div id="spinner">
+      <div class="loader"></div>
+    </div>
+
+    <div id="dashboard-content" style="display: none;"> -->
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+      <div class="d-flex align-items-center justify-content-between">
+        <a href="#" class="logo d-flex align-items-center">
+          <img src="../assets/img/logo-full.png" alt="" />
+        </a>
+      </div>
+      <!-- End Logo -->
+
+      <div class="d-flex align-items-center justify-content-between ms-3">
+        <div>
+          <div class="placeholder-glow placeholder" id="register-in-out-placeholder">
+            <button class="btn btn-secondary placeholder" disabled>Register In/Out</button>
+          </div>
+
+          <button type="button" class="btn btn-green d-none" id="register-in">
+            Register In
+          </button>
+
+          <button type="button" class="btn btn-red d-none" id="register-out">
+            Register Out
+          </button>
+        </div>
+      </div>
+
+      <div class="tm-dv-mk ms-3">
+        <div class="text-navy" style="font-size: 15px;">
+          <div>
+            <div>
+              <span>In Time: </span>
+              <span id="in-time">00:00:00</span>
+            </div>
+            <div>
+              <span>Out Time: </span>
+              <span id="out-time">00:00:00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tm-dv-mk ms-3">
+        <div class="text-navy" style="font-size: 15px;">
+          <div>
+            <div>
+              <span class="text-green">Work Hour: </span>
+              <span id="todays-total-task-time"></span>
+            </div>
+            <div>
+              <span class="text-danger">Break Hour: </span>
+              <span id="todays-total-break-time"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+          <li class="nav-item dropdown">
+            <div class="nav-link nav-icon">
+              <strong><i id="wifistatus" class="spinner-border spinner-border-sm"></i></strong>
+            </div>
+          </li>
+          <!-- End WiFi status -->
+
+          <!-- <li class="nav-item dropdown">
+            <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+              <i class="bi bi-bell"></i>
+              <span class="badge bg-navy-blue badge-number">4</span> </a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+              <li class="dropdown-header">
+                You have new notifications
+                <a href="https://app.agile4world.com/pms/myaccount" target="_blank"><span class="badge rounded-pill bg-navy p-2 ms-2">View all</span></a>
+              </li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+
+              <li class="notification-item">
+                <div>
+                  <h4>Notification 1</h4>
+                  <p>Quae dolorem earum veritatis oditseno</p>
+                </div>
+              </li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+              <li class="notification-item">
+                <div>
+                  <h4>Notification 2</h4>
+                  <p>Quae dolorem earum veritatis oditseno</p>
+                </div>
+              </li>
+            </ul>
+          </li> -->
+          <!-- End Notification Nav -->
+
+          <li class="nav-item dropdown">
+            <a class="nav-link nav-profile d-flex align-items-center" href="#" data-bs-toggle="dropdown">
+              <span id="username-small" class="d-none d-md-block dropdown-toggle"></span>
+            </a><!-- End Profile Iamge Icon -->
+            <!-- <p class="status">At Work</span> -->
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+              <!-- <li class="dropdown-header">
+                <h6 id="username"></h6>
+              </li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+
+              <li>
+                <div class="form-floating">
+                  <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                    <option selected="1">At Work</option>
+                    <option value="2">Idle</option>
+                    <option value="3">Helping Others</option>
+                  </select>
+                  <label for="floatingSelect">Share what you're up to</label>
+                </div>
+              </li> -->
+
+              <li>
+                <a id="reports-external-link" class="dropdown-item d-flex align-items-center" href="#">
+                  <i class="bi bi-clipboard-data"></i>
+                  <span>Reports</span>
+                </a>
+              </li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+              <!-- <li>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <i class="bi bi-gear"></i>
+                  <span>Account Settings</span>
+                </a>
+              </li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+
+              <li>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <i class="bi bi-question-circle"></i>
+                  <span>Need Help?</span>
+                </a>
+              </li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li> -->
+
+              <li id="signOut">
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <i class="bi bi-box-arrow-right"></i>
+                  <span>Sign Out</span>
+                </a>
+              </li>
+            </ul>
+            <!-- End Profile Dropdown Items -->
+          </li>
+          <!-- End Profile Nav -->
+        </ul>
+      </nav>
+      <!-- End Icons Navigation -->
+    </header>
+    <!-- End Header -->
+
+    <main id="main" class="main" style="min-height: 78vh;">
+      <section class="section dashboard">
+        <div>
+          <!-- Right side columns -->
+          <div class="col-lg-12 mt-3">
+            <div class="card breakRunningHtml"></div>
+            <div class="card d-none" id="taskNotStarted">
+              <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                <img src="../assets/img/running.png" alt="ready-to-start">
+                <h3>Ready to start ?</h3>
+                <p>You didn't start any task yet. Please start.</p>
+              </div>
+            </div>
+
+            <!-- Task List -->
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-center mb-1">
+                  <h1 class="card-title mb-0 me-2">My task list:</h1>
+                  <button class="badge bg-navy mt-3" style="border: none;font-weight: 300;" id="refreshTaskListAndScrum">
+                    Refresh
+                  </button>
+                </div>
+
+                <div class="d-flex justify-content-center align-items-center work-card">
+                  <div class="p-0 flex-grow-1">
+                    <select class="tasklistDropdown form-select" style="width:100%">
+                    </select>
+                  </div>
+                  <div class="ps-2">
+                    <button type="button" class="btn btn-sm btn-navy" id="submitScrum">
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- task Submit modal -->
+            <!-- Task Submit Modal -->
+            <div class="modal fade" id="taskDescriptionModal" tabindex="-1" data-bs-backdrop="false">
+              <div class="modal-dialog">
+                <div class="modal-content">
+
+                  <!-- Modal Header -->
+                  <div class="modal-header">
+                    <h5 class="modal-title text-navy fw-bold">Scrum - Today </h5>
+                  </div>
+
+                  <!-- Modal Form -->
+                  <form id="postScrum" action="#" method="post">
+                    <div class="modal-body">
+
+                      <!-- Task Name -->
+                      <div class="mb-2 text-navy">
+                        <span class="text-navy">Task Name:</span>
+                        <span class="taskName text-primary"></span>
+                      </div>
+
+                      <!-- Expected Time Input -->
+                      <div class="mb-2 text-navy">
+                        <label for="expectedTimeSpent" class="form-label">Expected time to spend*</label>
+                        <input type="number"
+                            id="expectedTimeSpent"
+                            name="expectedTimeSpent"
+                            step="0.01"
+                            min="0.01"
+                            class="form-control expectedTimeSpent"
+                            placeholder="In hours. Example: 1.5"
+                            title="Enter a valid number like 1, 1.5, or 0.75"
+                            required>
+                      </div>
+
+                      <!-- Comment Input -->
+                      <div class="mb-2 text-navy">
+                        <label for="taskComment" class="form-label">Comment</label>
+                        <textarea name="taskComment"
+                          id="taskComment"
+                          class="form-control"
+                          rows="4"
+                          placeholder="Your plan for this task..."
+                          style="resize: vertical;"></textarea>
+                      </div>
+
+                      <!-- Hidden Fields -->
+                      <input type="hidden" name="userId" class="userId">
+                      <input type="hidden" name="taskId" class="taskId">
+                      <input type="hidden" name="taskTitle" class="taskTitle">
+                      <input type="hidden" name="projectId" class="projectId">
+                      <input type="hidden" name="projectName" class="projectName">
+                      <input type="hidden" name="taskKey" class="taskKey">
+                      <input type="hidden" name="sprintId" class="sprintId">
+                      <input type="hidden" name="teamId" class="teamId">
+                      <input type="hidden" name="teamName" class="teamName">
+                      <input type="hidden" name="statusColor" class="statusColor">
+                      <input type="hidden" name="statusTitle" class="statusTitle">
+
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" id="closeTask">Close</button>
+                      <button type="submit" class="btn btn-sm btn-navy" id="postTask">Submit</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <!-- End task submit modal-->
+
+            <!-- Task Tray -->
+            <div class="card">
+              <div class="card-body">
+                <h1 class="card-title">Today's Scrum:</h1>
+                
+                <div class="todays-taskList-outer">
+                  <div class='noScrum'></div>
+                  <div class="todays-taskList">
+                    
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+            <!-- End Task Tray -->
+
+            <!-- Break Buttons -->
+            <div class="card">
+              <div class="card-body">
+                <h1 class="card-title">Breaks:</h1>
+                  <div class="break-buttons-inner d-flex mt-1">
+
+                  </div>
+              </div>
+            </div>
+            <!-- End Task Tray -->
+
+            <!-- work entry modal -->
+            <div class="modal fade" id="workEntryModal" tabindex="-1" data-bs-backdrop="false">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <!-- Modal Header -->
+                  <div class="modal-header">
+                    <h5 class="modal-title text-navy fw-bold">
+                      Work Entry
+                    </h5>
+                  </div>
+                  <!-- Modal Body -->
+                  <form id="postWorkEntry" method="post" action="#">
+                    <div class="modal-body">
+                      <span class="entrySubmittingMsg"></span>
+                      <!-- Hidden Inputs -->
+                      <input type="hidden" name="task_id" class="taskId" value="">
+                      <input type="hidden" name="project_id" class="projectId" value="">
+                      <div class="mb-2 text-navy">
+                        <span class="text-navy">Task Name:</span>
+                        <span class="taskName text-primary"></span>
+                      </div>
+                      <div class="row">
+                        <!-- Date -->
+                        <div class="col-md-4">
+                          <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="workDate" name="worked_date" placeholder="Date" readonly>
+                            <label for="workDate">Date</label>
+                          </div>
+                        </div>
+                        <!-- Spent Hours -->
+                        <div class="col-md-4">
+                          <div class="form-floating mb-3">
+                            <input hidden type="number" step="0.01" class="form-control" id="spentHours" name="worked_hour" placeholder="Spent Hours">
+                            <input readonly type="text" class="form-control" id="spentHoursDisplay" placeholder="Spent Hours">
+                            <label for="spentHours">Spent Hours</label>
+                          </div>
+                        </div>
+                        <!-- Entry Time -->
+                        <div class="col-md-4">
+                          <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="workEntryTime" name="work_entry_time" placeholder="Work Entry Time" readonly>
+                            <label for="workEntryTime">Entry Time</label>
+                          </div>
+                        </div>
+                        <!-- Comment (Fixed for better UI) -->
+                        <div class="col-md-12">
+                          <label for="comment" class="form-label text-navy">Comment:</label>
+                          <textarea
+                            name="comment"
+                            id="comment"
+                            class="form-control workEntryComment"
+                            rows="3"
+                            style="resize: vertical;"
+                            placeholder="Summarize your work."
+                            required></textarea>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                      <div class="d-flex justify-content-between w-100">
+                        <div>
+                          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" id="closeWorkEntryModal">Cancel</button>
+                          <button type="button" class="btn btn-sm btn-warning" data-bs-dismiss="modal" id="closeWorkEntryBtn">Will Do Manually</button>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-navy" id="workEntryBtn">Submit</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <!-- End work entry modal-->
+
+          </div>
+          <!-- End Right side columns -->
+        </div>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+      <div class="copyright">
+        &copy; Developed by <strong><span>Remote Programmer Pvt Ltd</span></strong
+        >
+      </div>
+    </footer>
+    <!-- End Footer -->
+    <!-- </div> -->
+
+    <!-- Vendor JS Files -->
+    <script>
+      if (typeof module === "object") {
+        window.module = module;
+        module = undefined;
+      }
+    </script>
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Template Main JS File -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/select2/js/select2.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('.tasklistDropdown')
+          .prepend('<option selected=""></option>')
+          .select2({
+            placeholder: "Choose a task",
+            allowClear: true,
+            width: 'resolve',
+          });
+
+        // Focus the search box when dropdown opens
+        $('.tasklistDropdown').on('select2:open', function() {
+          let searchField = document.querySelector('.select2-container input.select2-search__field');
+          if (searchField) {
+            searchField.focus();
+          }
+        });
+
+        //focus on expected time to spent
+        $('#taskDescriptionModal').on('focus', function() {
+          let expectedTimeInput = document.querySelector('.expectedTimeSpent');
+          if (expectedTimeInput) {
+            expectedTimeInput.focus();
+          }
+        });
+
+        //focus on workentry comment
+        $('#workEntryModal').on('focus', function() {
+          let workEntryComment = document.querySelector('.workEntryComment');
+          if (workEntryComment) {
+            workEntryComment.focus();
+          }
+        });
+      });
+
+      const expectedInput = document.getElementById('expectedTimeSpent');
+
+      expectedInput.addEventListener('input', function () {
+        if (this.validity.rangeUnderflow) {
+          this.setCustomValidity('Enter valid a number like 1, 1.5, or 0.75');
+        } else {
+          this.setCustomValidity('');
+        }
+      });
+    </script>
+    
+    <!-- Insert this line after script imports -->
+    <script>
+      if (window.module) module = window.module;
+    </script>
+    <script src="../js/dashboard.js"></script>
+    <!-- <script src="../js/idleModal.js"></script> -->    
+    <script src="../js/attendance.js"></script>
+    <script src="../js/scrum.js"></script>
+    <script src="../js/taskTracking.js"></script>
+    <script src="../js/internetStatus.js"></script>
+    <script src="../js/workEntry.js"></script>
+    <script src="../js/break.js"></script>
+    <script src="../js/rendererLib.js"></script>
+    <script src="../js/helper.js"></script>
+  </body>
+</html>

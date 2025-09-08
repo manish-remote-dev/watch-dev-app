@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>Idle Check</title>
+
+        <!-- Vendor CSS Files -->
+        <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet"/>
+
+        <!-- Template Main CSS File -->
+        <link href="../assets/css/style.css" rel="stylesheet" />
+        <link href="../assets/css/bootstrap-colors.css" rel="stylesheet" />
+        
+        <style>
+            /* Custom styles for the modal */
+            .modal-content {
+                border-radius: 10px;
+                padding: 30px;
+                background-color: #f8f9fa;
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .card-title {
+                font-size: 20px;
+                font-weight: 600;
+                margin-bottom: 20px;
+            }
+
+            .btn-ok {
+                width: 50%;
+                font-size: 18px;
+                padding: 10px;
+                background-color: #28a745;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                transition: background-color 0.3s ease;
+            }
+
+            .btn-ok:hover {
+                background-color: #218838;
+            }
+
+            .modal-backdrop {
+                z-index: 1040 !important;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Hi, it seems you are working. If so, please stop the break and start your task.</h5>
+                                    <div class="d-flex justify-content-center mt-3">
+                                        <button class="btn btn-success w-50 mx-2" id="ok">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- JavaScript to handle modal close -->
+        <script>
+            document.getElementById('ok').addEventListener('click', function() {
+                window.close();
+                window.WatchAPI.closeReminderBreak();
+            });
+        </script>
+    </body>
+</html>
